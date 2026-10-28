@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NK LUXE | Where Fashion Meets Luxury</title>
+<style>
+:root {
+  --brown:#2b1712;
+  --gold:#d7b574;
+  --cream:#f7f1e8;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--cream);
+  color:#261813;
+}
+header {
+  background:var(--brown);
+  color:white;
+  padding:22px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+.logo {
+  color:var(--gold);
+  font: bold 30px Georgia,serif;
+  letter-spacing:4px;
+}
+.tagline { font-size:11px; letter-spacing:2px; margin-top:6px; }
+nav { display:flex; gap:18px; flex-wrap:wrap; }
+nav a { color:white; text-decoration:none; }
+.hero {
+  background:linear-gradient(110deg,#1b0e0a,#593322);
+  color:white;
+  padding:85px 8%;
+}
+.hero h1 {
+  font:normal clamp(42px,7vw,72px) Georgia,serif;
+  margin:18px 0;
+}
+.hero p { max-width:520px; line-height:1.8; color:#e8d9c9; }
+button,.button {
+  background:var(--gold);
+  color:#28150f;
+  border:0;
+  padding:13px 18px;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+  display:inline-block;
+}
+section { padding:45px 6%; }
+h2 { font:normal 32px Georgia,serif; }
+.categories,.products {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:16px;
+  margin-top:24px;
+}
+.category {
+  background:var(--brown);
+  color:var(--gold);
+  text-align:center;
+  padding:25px 10px;
+  font:22px Georgia,serif;
+}
+.card {
+  background:white;
+  border:1px solid #e6d8c8;
+  padding-bottom:16px;
+}
+.productart {
+  height:150px;
+  background:linear-gradient(135deg,#583a2b,#21110d);
+  display:grid;
+  place-items:center;
+  color:var(--gold);
+  font:32px Georgia,serif;
+}
+.card h3,.card p { margin:12px; }
+.card button { margin:0 12px; width:calc(100% - 24px); }
+input,select {
+  padding:12px;
+  border:1px solid #cbb9a7;
+  max-width:100%;
+}
+.controls { display:flex; gap:10px; flex-wrap:wrap; margin:20px 0; }
+.cartbox { background:white; padding:20px; }
+.cartrow {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+.checkout {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;
+  margin:18px 0;
+}
+.checkout input { width:100%; }
+.note { font-size:13px; line-height:1.6; color:#75665c; }
+footer { background:var(--brown); color:white; padding:30px 6%; }
+footer strong { color:var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">NK LUXE</div>
+    <div class="tagline">WHERE FASHION MEETS LUXURY</div>
+  </div>
+  <nav>
+    <a href="#collections">Collections</a>
+    <a href="#shop">Shop</a>
+    <a href="#cart">Shopping Bag (<span id="count">0</span>)</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <p style="color:#d7b574;letter-spacing:3px">DISCOVER YOUR SIGNATURE STYLE</p>
+  <h1>Where Fashion<br>Meets Luxury.</h1>
+  <p>Discover refined clothing, wristwatches, footwear, bags and accessories. Elevate your everyday style with NK LUXE.</p>
+  <a class="button" href="#shop">EXPLORE THE COLLECTION</a>
+</div>
+
+<section id="collections">
+  <h2>Explore Our Collections</h2>
+  <p>Style for every moment. Elegance in every detail.</p>
+  <div class="categories">
+    <div class="category">NK Men</div>
+    <div class="category">NK Women</div>
+    <div class="category">Watches</div>
+    <div class="category">Footwear</div>
+    <div class="category">Bags</div>
+    <div class="category">Accessories</div>
+    <div class="category">Fragrances</div>
+    <div class="category">Jewellery</div>
+  </div>
+</section>
+
+<section id="shop">
+  <h2>Featured Products</h2>
+  <p>Discover your next favourite piece.</p>
+  <div class="controls">
+    <input id="search" placeholder="Search fashion..." aria-label="Search products">
+    <select id="category" aria-label="Filter products">
+      <option>All</option>
+      <option>Clothing</option>
+      <option>Watches</option>
+      <option>Footwear</option>
+      <option>Bags</option>
+      <option>Accessories</option>
+      <option>Fragrance</option>
+      <option>Jewellery</option>
+    </select>
+  </div>
+  <div class="products" id="products"></div>
+</section>
+
+<section id="cart">
+  <h2>Your Shopping Bag</h2>
+  <div class="cartbox">
+    <div id="items">Your bag is empty.</div>
+    <h3 id="total">Total: ₦0</h3>
+    <h2 style="font-size:24px">Guest Checkout</h2>
+    <p class="note">No account is needed. This is a demonstration checkout; real payments are not connected.</p>
+    <form id="checkout">
+      <div class="checkout">
+        <input id="name" required placeholder="Full name">
+        <input required type="tel" placeholder="Phone number">
+        <input required type="email" placeholder="Email address">
+        <input required placeholder="Delivery address">
+      </div>
+      <button type="submit">CONTINUE</button>
+    </form>
+    <p class="note" id="message"></p>
+  </div>
+</section>
+
+<footer>
+  <strong>NK LUXE</strong>
+  <p>Where Fashion Meets Luxury.</p>
+  <p>Nigerian fashion, with a vision for the world.</p>
+</footer>
+
+<script>
+const products = [
+ {id:1,name:"Premium Oxford Shirt",cat:"Clothing",price:38500,mark:"NK"},
+ {id:2,name:"Classic Gold-Tone Watch",cat:"Watches",price:67500,mark:"TIME"},
+ {id:3,name:"Luxury Sneakers",cat:"Footwear",price:52000,mark:"STEP"},
+ {id:4,name:"Structured City Bag",cat:"Bags",price:48000,mark:"FORM"},
+ {id:5,name:"Leather Wallet",cat:"Accessories",price:18500,mark:"NK"},
+ {id:6,name:"Amber Fragrance",cat:"Fragrance",price:29500,mark:"SCENT"},
+ {id:7,name:"Premium Hoodie",cat:"Clothing",price:42000,mark:"LUXE"},
+ {id:8,name:"Elegant Bracelet",cat:"Jewellery",price:12500,mark:"GOLD"}
+];
+
+let cart = {};
+const money = n => "₦" + n.toLocaleString("en-NG");
+
+function showProducts() {
+ const q = document.getElementById("search").value.toLowerCase();
+ const cat = document.getElementById("category").value;
+ const filtered = products.filter(p =>
+   (cat === "All" || p.cat === cat) &&
+   (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
+ );
+ document.getElementById("products").innerHTML = filtered.map(p => `
+   <article class="card">
+     <div class="productart">${p.mark}</div>
+     <p style="color:#98713f;font-size:12px">${p.cat.toUpperCase()}</p>
+     <h3>${p.name}</h3>
+     <p><strong>${money(p.price)}</strong></p>
+     <button onclick="add(${p.id})">ADD TO BAG</button>
+   </article>
+ `).join("") || "<p>No products found.</p>";
+}
+
+function add(id) {
+ cart[id] = (cart[id] || 0) + 1;
+ showCart();
+}
+
+function change(id, amount) {
+ cart[id] += amount;
+ if (cart[id] <= 0) delete cart[id];
+ showCart();
+}
+
+function showCart() {
+ const ids = Object.keys(cart);
+ document.getElementById("count").textContent =
+   ids.reduce((sum,id) => sum + cart[id],0);
+
+ document.getElementById("items").innerHTML = ids.length
+ ? ids.map(id => {
+     const p = products.find(x => x.id == id);
+     return `<div class="cartrow">
+       <span>${p.name} × ${cart[id]}<br>${money(p.price * cart[id])}</span>
+       <span>
+         <button type="button" onclick="change(${id},-1)">−</button>
+         <button type="button" onclick="change(${id},1)">+</button>
+       </span>
+     </div>`;
+   }).join("")
+ : "Your bag is empty.";
+
+ document.getElementById("total").textContent =
+   "Total: " + money(ids.reduce((sum,id) =>
+     sum + products.find(p => p.id == id).price * cart[id],0));
+}
+
+document.getElementById("search").addEventListener("input",showProducts);
+document.getElementById("category").addEventListener("change",showProducts);
+
+document.getElementById("checkout").addEventListener("submit",function(e) {
+ e.preventDefault();
+ document.getElementById("message").textContent = !Object.keys(cart).length
+ ? "Please add a product to your bag first."
+ : "Demo checkout only. No order was submitted and no payment was taken. Connect a secure backend and payment provider before launch.";
+});
+
+showProducts();
+showCart();
+</script>
+</body>
+</html>
