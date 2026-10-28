@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NK LUXE | Where Fashion Meets Luxury</title>
+<style>
+:root {
+  --brown: #2b1712;
+  --gold: #d7b574;
+  --cream: #f7f1e8;
+  --dark: #17100d;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--cream);
+  color: #261813;
+}
+header {
+  background: var(--brown);
+  color: white;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.logo {
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: 34px;
+  letter-spacing: 3px;
+}
+.tagline { font-size: 10px; letter-spacing: 2px; }
+nav { display: flex; gap: 20px; flex-wrap: wrap; }
+nav a { color: white; text-decoration: none; }
+nav a:hover { color: var(--gold); }
+.hero {
+  min-height: 360px;
+  padding: 65px 7%;
+  color: white;
+  background: linear-gradient(90deg, #160c08, #4c2918, #1a0d08);
+  display: flex;
+  align-items: center;
+}
+.hero-content { max-width: 600px; }
+.eyebrow {
+  color: var(--gold);
+  letter-spacing: 4px;
+  font-size: 12px;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(38px, 6vw, 66px);
+  font-weight: normal;
+  margin: 15px 0;
+}
+.hero p { line-height: 1.8; max-width: 460px; }
+.btn {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--dark);
+  padding: 14px 22px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 3px;
+}
+section { padding: 45px 6%; }
+.section-heading {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+.muted { color: #786b62; line-height: 1.6; }
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 25px;
+}
+.category {
+  background: var(--brown);
+  color: white;
+  border: 1px solid #634531;
+  padding: 22px 8px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 15px;
+}
+.category span {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.category:hover, .category.active {
+  background: #684329;
+  outline: 2px solid var(--gold);
+}
+.shop-tools {
+  display: flex;
+  gap: 12px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+input, select, textarea {
+  padding: 13px;
+  border: 1px solid #d9cbbb;
+  background: white;
+  border-radius: 4px;
+  font: inherit;
+}
+.shop-tools input { flex: 1; min-width: 190px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 20px;
+}
+.product {
+  background: white;
+  border: 1px solid #e5d9ca;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px #2b17120b;
+}
+.product img {
+  display: block;
+  width: 100%;
+  height: 205px;
+  object-fit: cover;
+  background: #e9dfd1;
+}
+.product-info { padding: 15px; }
+.product h3 { margin: 0 0 8px; font-size: 16px; }
+.product p { font-size: 13px; color: #786b62; }
+.price { font-weight: bold; margin: 14px 0; }
+.add-btn {
+  width: 100%;
+  background: var(--brown);
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.add-btn:hover { background: #684329; }
+.no-results { padding: 25px 0; }
+.lower {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+.panel {
+  background: white;
+  padding: 22px;
+  border: 1px solid #e5d9ca;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #eee1d3;
+  padding: 12px 0;
+  font-size: 14px;
+}
+.cart-item button {
+  border: none;
+  cursor: pointer;
+  background: #eee1d3;
+  padding: 4px 8px;
+}
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.checkout-fields {
+  display: grid;
+  gap: 10px;
+  margin-top: 15px;
+}
+.checkout-fields input, .checkout-fields textarea { width: 100%; }
+.small { font-size: 12px; color: #786b62; line-height: 1.6; }
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 30px 6%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+footer strong { color: var(--gold); }
+@media(max-width:700px) {
+  .lower { grid-template-columns: 1fr; }
+  header { padding: 18px 5%; }
+  section { padding: 32px 5%; }
+  .hero { padding: 45px 6%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">NK LUXE</div>
+    <div class="tagline">WHERE FASHION MEETS LUXURY</div>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#collections">Collections</a>
+    <a href="#shop">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="eyebrow">DISCOVER YOUR SIGNATURE STYLE</div>
+    <h1>Where Fashion<br>Meets Luxury.</h1>
+    <p>Discover refined clothing, watches, footwear, bags and accessories. Elevate your everyday style with NK LUXE.</p>
+    <a class="btn" href="#shop">EXPLORE THE COLLECTION →</a>
+  </div>
+</section>
+
+<section id="collections">
+  <h2 class="section-heading">Explore Our Collections</h2>
+  <p class="muted">Style for every moment. Elegance in every detail.</p>
+  <div class="categories">
+    <button class="category" data-category="Men"><span>🤵</span>NK Men</button>
+    <button class="category" data-category="Women"><span>👗</span>NK Women</button>
+    <button class="category" data-category="Watches"><span>⌚</span>Watches</button>
+    <button class="category" data-category="Footwear"><span>👟</span>Footwear</button>
+    <button class="category" data-category="Bags"><span>👜</span>Bags</button>
+    <button class="category" data-category="Accessories"><span>🕶️</span>Accessories</button>
+    <button class="category" data-category="Fragrance"><span>✨</span>Fragrances</button>
+    <button class="category" data-category="Jewellery"><span>💍</span>Jewellery</button>
+  </div>
+</section>
+
+<section id="shop">
+  <h2 class="section-heading">Featured Products</h2>
+  <p class="muted">Discover your next favourite piece.</p>
+  <div class="shop-tools">
+    <input id="search" type="search" placeholder="Search products...">
+    <select id="filter" aria-label="Filter products by category">
+      <option value="All">All Categories</option>
+      <option value="Men">Men</option>
+      <option value="Women">Women</option>
+      <option value="Watches">Watches</option>
+      <option value="Footwear">Footwear</option>
+      <option value="Bags">Bags</option>
+      <option value="Accessories">Accessories</option>
+      <option value="Fragrance">Fragrance</option>
+      <option value="Jewellery">Jewellery</option>
+    </select>
+  </div>
+  <div class="products" id="products"></div>
+</section>
+
+<section class="lower">
+  <div id="about" class="panel">
+    <h2 class="section-heading">The NK LUXE Experience</h2>
+    <p class="muted">NK LUXE is built for people who appreciate personal style, quality and timeless elegance. Explore fashion for everyday life and special occasions.</p>
+    <h3>Our Promise</h3>
+    <p class="muted">A considered collection, a premium shopping experience and a vision that starts in Nigeria and reaches the world.</p>
+  </div>
+
+  <div class="panel" id="contact">
+    <h2 class="section-heading">Your Shopping Bag</h2>
+    <p class="small">Your selected items appear below.</p>
+    <div id="cart"></div>
+    <div class="total"><span>Total</span><span id="total">₦0</span></div>
+    <h3>Guest Checkout</h3>
+    <p class="small">No account is needed for this demonstration.</p>
+    <form id="checkout" class="checkout-fields">
+      <input name="name" placeholder="Full name" required>
+      <input name="phone" placeholder="Phone number" type="tel" required>
+      <input name="email" placeholder="Email address" type="email" required>
+      <textarea name="address" placeholder="Delivery address" rows="3" required></textarea>
+      <button class="btn" type="submit">CONTINUE</button>
+    </form>
+    <p class="small">Demo only: payments and real orders are not connected.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div><strong class="logo">NK LUXE</strong><br><span class="tagline">WHERE FASHION MEETS LUXURY</span></div>
+  <div>🚚 Fast & Reliable Delivery<br>Across Nigeria</div>
+  <div>♧ Secure Shopping<br>Payment setup required</div>
+  <div>Customer Support<br>Contact details coming soon</div>
+</footer>
+
+<script>
+const products = [
+ {id:1,name:"Premium Oxford Shirt",category:"Men",price:38500,emoji:"👔",image:"https://images.unsplash.com/photo-1603252110481-7ba873bf42ab?auto=format&fit=crop&w=600&q=80"},
+ {id:2,name:"Elegant Women's Dress",category:"Women",price:42500,emoji:"👗",image:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=600&q=80"},
+ {id:3,name:"Classic Gold-Tone Watch",category:"Watches",price:67500,emoji:"⌚",image:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80"},
+ {id:4,name:"Luxury Sneakers",category:"Footwear",price:52000,emoji:"👟",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"},
+ {id:5,name:"Structured City Bag",category:"Bags",price:48000,emoji:"👜",image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80"},
+ {id:6,name:"Classic Sunglasses",category:"Accessories",price:18500,emoji:"🕶️",image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80"},
+ {id:7,name:"Amber Fragrance",category:"Fragrance",price:29500,emoji:"✨",image:"https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80"},
+ {id:8,name:"Gold-Tone Bracelet",category:"Jewellery",price:22500,emoji:"💍",image:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=600&q=80"},
+ {id:9,name:"Men's Classic Jacket",category:"Men",price:75000,emoji:"🧥",image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80"},
+ {id:10,name:"Women's Handbag",category:"Women",price:39000,emoji:"👜",image:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80"},
+ {id:11,name:"Everyday Leather Wallet",category:"Accessories",price:18500,emoji:"👝",image:"https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80"},
+ {id:12,name:"Signature Perfume",category:"Fragrance",price:35000,emoji:"✨",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80"}
+];
+
+const cart = {};
+const money = n => "₦" + n.toLocaleString("en-NG");
+
+function renderProducts() {
+  const search = document.getElementById("search").value.toLowerCase();
+  const category = document.getElementById("filter").value;
+  const shown = products.filter(p =>
+    p.name.toLowerCase().includes(search) &&
+    (category === "All" || p.category === category)
+  );
+  const container = document.getElementById("products");
+  if (!shown.length) {
+    container.innerHTML = '<p class="no-results">No products found. Try another search.</p>';
+    return;
+  }
+  container.innerHTML = shown.map(p => `
+    <article class="product">
+      <img src="${p.image}" alt="${p.name}" loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div style="display:none;text-align:center;padding:55px;font-size:45px">${p.emoji}</div>
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.category}</p>
+        <div class="price">${money(p.price)}</div>
+        <button class="add-btn" onclick="addToCart(${p.id})">＋ ADD TO BAG</button>
+      </div>
+    </article>`).join("");
+}
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  renderCart();
+}
+function changeQuantity(id, amount) {
+  cart[id] = (cart[id] || 0) + amount;
+  if (cart[id] <= 0) delete cart[id];
+  renderCart();
+}
+function renderCart() {
+  const items = Object.entries(cart);
+  document.getElementById("cart").innerHTML = items.length ? items.map(([id, qty]) => {
+    const p = products.find(item => item.id === Number(id));
+    return `<div class="cart-item">
+      <span>${p.name}<br>${money(p.price)} × ${qty}</span>
+      <span>
+        <button onclick="changeQuantity(${id},-1)">−</button>
+        ${qty}
+        <button onclick="changeQuantity(${id},1)">+</button>
+      </span>
+    </div>`;
+  }).join("") : '<p class="muted">Your bag is empty.</p>';
+  const total = items.reduce((sum,[id,qty]) =>
+    sum + products.find(p => p.id === Number(id)).price * qty, 0);
+  document.getElementById("total").textContent = money(total);
+}
+document.getElementById("search").addEventListener("input", renderProducts);
+document.getElementById("filter").addEventListener("change", renderProducts);
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    document.getElementById("filter").value = button.dataset.category;
+    renderProducts();
+    document.getElementById("shop").scrollIntoView({behavior:"smooth"});
+  });
+});
+document.getElementById("checkout").addEventListener("submit", event => {
+  event.preventDefault();
+  alert("This is a demo checkout. No order or payment has been submitted. Real checkout must be connected before launch.");
+});
+renderProducts();
+renderCart();
+</script>
+</body>
+</html>
