@@ -207,6 +207,7 @@ footer strong { color: var(--gold); }
   .hero { padding: 45px 6%; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -389,6 +390,31 @@ document.getElementById("checkout").addEventListener("submit", event => {
 });
 renderProducts();
 renderCart();
+</script>
+<script>
+  const SUPABASE_URL = 'YOUR_PROJECT_URL';
+  const SUPABASE_PUBLISHABLE_KEY = 'YOUR_PUBLISHABLE_KEY';
+
+  const nkLuxeSupabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  async function testNKLuxeConnection() {
+    const { data, error } = await nkLuxeSupabase
+      .from('products')
+      .select('id, name, price')
+      .limit(5);
+
+    if (error) {
+      console.error('NK LUXE connection error:', error.message);
+      return;
+    }
+
+    console.log('NK LUXE database connected:', data);
+  }
+
+  testNKLuxeConnection();
 </script>
 </body>
 </html>
