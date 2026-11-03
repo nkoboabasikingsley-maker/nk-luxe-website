@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NK LUXE | Admin Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #17120e;
+      color: #f5eadb;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .login {
+      width: 100%;
+      max-width: 420px;
+      background: #241b15;
+      padding: 38px;
+      border: 1px solid #80613e;
+      border-radius: 12px;
+    }
+    h1 { text-align: center; letter-spacing: 5px; }
+    p { text-align: center; color: #c9b69f; }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      background: #120e0b;
+      color: white;
+      border: 1px solid #80613e;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      background: #b18a56;
+      color: #17120e;
+      border: 0;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #message { font-size: 14px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <main class="login">
+    <h1>NK LUXE</h1>
+    <p>Luxury is the Standard.</p>
+    <h2>Administrator Login</h2>
+
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Admin email" required>
+      <input id="password" type="password" placeholder="Password" required>
+      <button type="submit">SIGN IN</button>
+    </form>
+
+    <p id="message"></p>
+  </main>
+
+  <script>
+    const SUPABASE_URL = "mcgtzucqnhcstqhvnotf";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TJ09OH4hhLMyuIGHI1418g_MPb3uzIc";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const message = document.getElementById("message");
+      message.textContent = "Checking login...";
+
+      const { data, error } = await db.auth.signInWithPassword({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      const { data: admin, error: adminError } = await db
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      if (adminError || !admin) {
+        await db.auth.signOut();
+        message.textContent = "This account is not an approved administrator.";
+        return;
+      }
+
+      window.location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>
