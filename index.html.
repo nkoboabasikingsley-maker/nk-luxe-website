@@ -319,7 +319,28 @@ const products = [
  {id:11,name:"Everyday Leather Wallet",category:"Accessories",price:18500,emoji:"👝",image:"https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80"},
  {id:12,name:"Signature Perfume",category:"Fragrance",price:35000,emoji:"✨",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80"}
 ];
+async function loadNKLuxeProducts() {
+  const { data, error } = await nkLuxeSupabase
+    .from("products")
+    .select("*")
+    .eq("active", true);
 
+  if (error) {
+    console.error("Could not load products:", error.message);
+    return;
+  }
+
+  products = data.map(p => ({
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    price: Number(p.price),
+    image: p.image_url || "",
+    emoji: "✨"
+  }));
+
+  renderProducts();
+}
 const cart = {};
 const money = n => "₦" + n.toLocaleString("en-NG");
 
@@ -414,7 +435,7 @@ renderCart();
     console.log('NK LUXE database connected:', data);
   }
 
-  testNKLuxeConnection();
+  loadNKLuxeProducts();
 </script>
 </body>
 </html>
