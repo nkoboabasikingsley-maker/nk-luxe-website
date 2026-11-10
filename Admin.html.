@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NK LUXE | Admin Hub</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17120e;color:#f5eadb;font-family:Arial,sans-serif}
+header{padding:24px;background:#241b15;border-bottom:1px solid #80613e}
+header h1{letter-spacing:5px;margin:0}
+header p{color:#c9b69f}
+main{max-width:950px;margin:35px auto;padding:20px}
+.panel{background:#241b15;border:1px solid #80613e;border-radius:12px;padding:25px;margin-bottom:25px}
+input,textarea,select{width:100%;padding:13px;margin:8px 0 16px;background:#120e0b;color:white;border:1px solid #80613e;border-radius:6px}
+button{padding:13px 18px;background:#b18a56;color:#17120e;border:0;border-radius:6px;font-weight:bold;cursor:pointer}
+.logout{background:#604333;color:white}
+.product{padding:15px;border-bottom:1px solid #604b36;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.product small{color:#c9b69f}
+#message{color:#e6c28e}
+.hidden{display:none}
+h2{color:#d4ae7b}
+</style>
+</head>
+<body>
+
+<header>
+<h1>NK LUXE</h1>
+<p>Luxury is the Standard. | ADMIN HUB</p>
+</header>
+
+<main>
+<section id="login" class="panel">
+<h2>Administrator Login</h2>
+<form id="loginForm">
+<label>Email address</label>
+<input id="email" type="email" required>
+<label>Password</label>
+<input id="password" type="password" required>
+<button type="submit">SIGN IN</button>
+</form>
+<p id="message"></p>
+</section>
+
+<section id="hub" class="hidden">
+<div class="panel">
+<h2>Welcome to NK LUXE Admin</h2>
+<p>Manage your luxury store products here.</p>
+<button class="logout" id="logout">SIGN OUT</button>
+</div>
+
+<div class="panel">
+<h2>Add New Product</h2>
+<form id="productForm">
+<label>Product name</label>
+<input id="name" required placeholder="e.g. Premium Leather Bag">
+
+<label>Category</label>
+<input id="category" required placeholder="e.g. Bags">
+
+<label>Price (₦)</label>
+<input id="price" type="number" min="0" required>
+
+<label>Stock quantity</label>
+<input id="stock" type="number" min="0" value="1" required>
+
+<label>Product description</label>
+<textarea id="description" placeholder="Describe your product"></textarea>
+
+<label>Product image URL</label>
+<input id="image" type="url" placeholder="https://...">
+
+<button type="submit">ADD PRODUCT</button>
+</form>
+<p id="productMessage"></p>
+</div>
+
+<div class="panel">
+<h2>Store Products</h2>
+<div id="productList">Loading products...</div>
+</div>
+</section>
+</main>
+
+<script>
+const SUPABASE_URL = "mcgtzucqnhcstqhvnotf";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TJ09OH4hhLMyuIGHI1418g_MPb3uzIc";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const loginSection = document.getElementById("login");
+const hubSection = document.getElementById("hub");
+const message = document.getElementById("message");
+
+async function checkAdmin(user) {
+  const {data,error} = await db
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(error || !data) {
+    await db.auth.signOut();
+    message.textContent = "This account is not an approved administrator.";
+    return false;
+  }
+
+  loginSection.classList.add("hidden");
+  hubSection.classList.remove("hidden");
+  await loadProducts();
+  return true;
+}
+
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  message.textContent = "Checking login...";
+
+  const {data,error} = await db.auth.signInWithPassword({
+    email:document.getElementById("email").value,
+    password:document.getElementById("password").value
+  });
+
+  if(error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  await checkAdmin(data.user);
+});
+
+document.getElementById("logout").addEventListener("click",async()=>{
+  await db.auth.signOut();
+  hubSection.classList.add("hidden");
+  loginSection.classList.remove("hidden");
+});
+
+async function loadProducts() {
+  const list = document.getElementById("productList");
+  list.textContent = "Loading products...";
+
+  const {data,error} = await db
+    .from("products")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error) {
+    list.textContent = "Could not load products: " + error.message;
+    return;
+  }
+
+  if(!data.length) {
+    list.textContent = "No products found.";
+    return;
+  }
+
+  list.innerHTML = data.map(p=>`
+    <div class="product">
+      <div>
+        <strong>${escapeHTML(p.name)}</strong><br>
+        <small>${escapeHTML(p.category)} | ₦${Number(p.price).toLocaleString("en-NG")} | Stock: ${p.stock}</small>
+      </div>
+      <button class="logout" onclick="deleteProduct('${p.id}')">DELETE</button>
+    </div>
+  `).join("");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+document.getElementById("productForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const output = document.getElementById("productMessage");
+  output.textContent = "Saving product...";
+
+  const product = {
+    name:document.getElementById("name").value.trim(),
+    category:document.getElementById("category").value.trim(),
+    price:Number(document.getElementById("price").value),
+    stock:Number(document.getElementById("stock").value),
+    description:document.getElementById("description").value.trim(),
+    image_url:document.getElementById("image").value.trim() || null,
+    active:true
+  };
+
+  const {error} = await db.from("products").insert(product);
+
+  if(error) {
+    output.textContent = "Error: " + error.message;
+    return;
+  }
+
+  output.textContent = "Product added successfully!";
+  e.target.reset();
+  await loadProducts();
+});
+
+async function deleteProduct(id) {
+  if(!confirm("Are you sure you want to delete this product?")) return;
+
+  const {error} = await db.from("products").delete().eq("id",id);
+
+  if(error) {
+    alert("Could not delete product: " + error.message);
+    return;
+  }
+
+  await loadProducts();
+}
+
+async function restoreSession() {
+  const {data} = await db.auth.getSession();
+  if(data.session) await checkAdmin(data.session.user);
+}
+
+if(SUPABASE_URL.includes("PASTE_") ||
+   SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")) {
+  message.textContent = "Please add your Supabase project URL and publishable key.";
+} else {
+  restoreSession();
+}
+</script>
+</body>
+</html>
